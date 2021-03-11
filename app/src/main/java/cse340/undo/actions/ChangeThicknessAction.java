@@ -29,6 +29,8 @@ public class ChangeThicknessAction extends AbstractReversibleAction {
         // TODO: update the thickness in the view
         // TODO: store any information you'll need to undo this later
         // TODO: don't store any information you won't need
+        mPrev = view.getCurrentPaint().getStrokeWidth();
+        view.getCurrentPaint().setStrokeWidth(mThickness);
 
     }
 
@@ -37,6 +39,7 @@ public class ChangeThicknessAction extends AbstractReversibleAction {
     public void undoAction(DrawingView view) {
         super.undoAction(view);
         // TODO: update the thickness in the view
+        mPrev = view.getCurrentPaint().getStrokeWidth();
     }
 
     /** @inheritDoc */
