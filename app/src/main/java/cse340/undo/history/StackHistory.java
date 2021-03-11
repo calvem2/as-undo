@@ -47,6 +47,12 @@ public class StackHistory implements AbstractStackHistory {
         // 2. Add the new event to the undo stack
         // 3. Clear out the redo stack (when we do a new action we have to delete all the redo
         // actions to ensure consistency)
+        if (mUndoStack.size() == mCapacity) {
+            mUndoStack.remove();
+        }
+        mUndoStack.add(action);
+        mRedoStack.clear();
+
     }
 
     /**
@@ -61,8 +67,12 @@ public class StackHistory implements AbstractStackHistory {
         // 2. Otherwise remove the most recent action from the stack
         // 2.1. Add it to the redo stack
         // 2.2. Return it.
-
-        return null;
+        if (mUndoStack.isEmpty()) {
+            return null;
+        }
+        AbstractReversibleAction action = mUndoStack.removeLast();
+        mRedoStack.add(action);
+        return action;
     }
 
     /**
@@ -77,8 +87,12 @@ public class StackHistory implements AbstractStackHistory {
         // 2. Otherwise get the most recent action from the stack
         // 2.1. Add it to the undo stack
         // 2.2. Return it.
-
-        return null;
+        if (mRedoStack.isEmpty()) {
+            return null;
+        }
+        AbstractReversibleAction action = mRedoStack.removeLast();
+        mUndoStack.add(action);
+        return action;
     }
 
     /**
@@ -87,6 +101,8 @@ public class StackHistory implements AbstractStackHistory {
     @Override
     public void clear() {
         // TODO: clear the datastructures
+        mRedoStack.clear();
+        mUndoStack.clear();
     }
 
     /**
