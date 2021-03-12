@@ -4,6 +4,7 @@
     <string name="undo_label">Undo</string>
     <string name="redo_label">Redo</string>
     <string name="thickness_label">Thickness</string>
+    <string name="opacity_label">Opacity</string>
     <string name="color_label">Color</string>
     <string name="undo_desc">Undo an action</string>
     <string name="redo_desc">Redo an action</string>
@@ -16,4 +17,9 @@
     <string name="med_desc">Select medium stroke</string>
     <string name="thin_desc">Select thin stroke</string>
     <string name="zero_desc">Select zero stroke</string>
+    <string name="opacity_desc">Select a line opacity</string>
+    <string name="op_hundred_desc">Select 100% opaque stroke</string>
+    <string name="op_three_quarter_desc">Select 75% opaque stroke</string>
+    <string name="op_fifty_desc">Select 50% opaque stroke</string>
+    <string name="op_quarter_desc">Select 25% opaque stroke</string>
 </resources>

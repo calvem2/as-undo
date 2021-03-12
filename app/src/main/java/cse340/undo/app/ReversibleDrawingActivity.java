@@ -12,6 +12,7 @@ import android.view.View;
 
 import cse340.undo.R;
 import cse340.undo.actions.ChangeColorAction;
+import cse340.undo.actions.ChangeOpacityAction;
 import cse340.undo.actions.ChangeThicknessAction;
 import cse340.undo.actions.AbstractReversibleAction;
 
@@ -32,9 +33,16 @@ public class ReversibleDrawingActivity extends AbstractReversibleDrawingActivity
 //        R.id.fab_red, R.id.fab_blue, R.id.fab_green
     };
 
+    /** List of menu item FABs for opacity menu. */
+    @IdRes
+    private static final int[] OPACITY_MENU_ITEMS = {
+            R.id.fab_opacity_25, R.id.fab_opacity_50, R.id.fab_opacity_75, R.id.fab_opacity_100
+    };
+
     /** State variables used to track whether menus are open. */
     private boolean isThicknessMenuOpen;
     private boolean isColorMenuOpen;
+    private boolean isOpacityMenuOpen;
 
     @SuppressLint("PrivateResource")
     private int mMiniFabSize;
@@ -79,15 +87,14 @@ public class ReversibleDrawingActivity extends AbstractReversibleDrawingActivity
             @Override
             public void onColorSelected(int color) {
                 // set color
-//                p.setColor(color);
                 doAction(new ChangeColorAction(color));
 
                 // close menu
-//                isColorMenuOpen = !isColorMenuOpen;
                 isColorMenuOpen = toggleMenu(COLOR_MENU_ITEMS, isColorMenuOpen);
                 mColorPickerView.setFocusable(isColorMenuOpen);
                 setViewVisibility(mColorPickerView, isColorMenuOpen);
                 enableCollapsibleMenu(R.id.fab_thickness, THICKNESS_MENU_ITEMS, !isColorMenuOpen);
+                enableCollapsibleMenu(R.id.fab_opacity, OPACITY_MENU_ITEMS, !isColorMenuOpen);
             }
         };
         mColorPickerView.addColorChangeListener(mPickerListener);
@@ -98,9 +105,9 @@ public class ReversibleDrawingActivity extends AbstractReversibleDrawingActivity
         // TODO: you may have to edit this after integrating the color picker
         findViewById(R.id.fab_color).setOnClickListener((v) -> {
             enableCollapsibleMenu(R.id.fab_thickness, THICKNESS_MENU_ITEMS, isColorMenuOpen);
+            enableCollapsibleMenu(R.id.fab_opacity, OPACITY_MENU_ITEMS, isColorMenuOpen);
 
             // todo: really coding out of my ass here
-//            isColorMenuOpen = !isColorMenuOpen;
             isColorMenuOpen = toggleMenu(COLOR_MENU_ITEMS, isColorMenuOpen);
             mColorPickerView.setFocusable(isColorMenuOpen);
             setViewVisibility(mColorPickerView, isColorMenuOpen);
@@ -111,6 +118,7 @@ public class ReversibleDrawingActivity extends AbstractReversibleDrawingActivity
             if (isThicknessMenuOpen) {
                 isThicknessMenuOpen = toggleMenu(THICKNESS_MENU_ITEMS, isThicknessMenuOpen);
                 enableCollapsibleMenu(R.id.fab_color, COLOR_MENU_ITEMS, !isThicknessMenuOpen);
+                enableCollapsibleMenu(R.id.fab_opacity, OPACITY_MENU_ITEMS, !isThicknessMenuOpen);
                 return true;
             } else if (isColorMenuOpen) {
 //                isColorMenuOpen = !isColorMenuOpen;
@@ -118,6 +126,12 @@ public class ReversibleDrawingActivity extends AbstractReversibleDrawingActivity
                 mColorPickerView.setFocusable(isColorMenuOpen);
                 setViewVisibility(mColorPickerView, isColorMenuOpen);
                 enableCollapsibleMenu(R.id.fab_thickness, THICKNESS_MENU_ITEMS, !isColorMenuOpen);
+                enableCollapsibleMenu(R.id.fab_opacity, OPACITY_MENU_ITEMS, !isColorMenuOpen);
+                return true;
+            } else if (isOpacityMenuOpen) {
+                isOpacityMenuOpen = toggleMenu(OPACITY_MENU_ITEMS, isOpacityMenuOpen);
+                enableCollapsibleMenu(R.id.fab_color, COLOR_MENU_ITEMS, !isOpacityMenuOpen);
+                enableCollapsibleMenu(R.id.fab_opacity, OPACITY_MENU_ITEMS, !isOpacityMenuOpen);
                 return true;
             } else {
                 return mDrawingView.onTouchEvent(event);
@@ -130,7 +144,15 @@ public class ReversibleDrawingActivity extends AbstractReversibleDrawingActivity
         addCollapsibleMenu(R.layout.thickness_menu, ConstraintSet.BOTTOM, ConstraintSet.END, THICKNESS_MENU_ITEMS, this::onThicknessMenuSelected);
         findViewById(R.id.fab_thickness).setOnClickListener((v) ->{
             enableCollapsibleMenu(R.id.fab_color, COLOR_MENU_ITEMS, isThicknessMenuOpen);
+            enableCollapsibleMenu(R.id.fab_opacity, OPACITY_MENU_ITEMS, isThicknessMenuOpen);
             isThicknessMenuOpen = toggleMenu(THICKNESS_MENU_ITEMS, isThicknessMenuOpen);
+        });
+
+        addCollapsibleMenu(R.layout.opacity_menu, ConstraintSet.BOTTOM, ConstraintSet.END, OPACITY_MENU_ITEMS, this::onOpacityMenuSelected);
+        findViewById(R.id.fab_opacity).setOnClickListener((v) ->{
+            enableCollapsibleMenu(R.id.fab_thickness, THICKNESS_MENU_ITEMS, isOpacityMenuOpen);
+            enableCollapsibleMenu(R.id.fab_color, COLOR_MENU_ITEMS, isOpacityMenuOpen);
+            isOpacityMenuOpen = toggleMenu(OPACITY_MENU_ITEMS, isOpacityMenuOpen);
         });
     }
 
@@ -180,6 +202,7 @@ public class ReversibleDrawingActivity extends AbstractReversibleDrawingActivity
         // Close the menu.
         isColorMenuOpen = toggleMenu(COLOR_MENU_ITEMS, isColorMenuOpen);
         enableCollapsibleMenu(R.id.fab_thickness, THICKNESS_MENU_ITEMS, !isColorMenuOpen);
+//        enableCollapsibleMenu(R.id.fab_opacity, OPACITY_MENU_ITEMS, !isColorMenuOpen);
     }
 
     /**
@@ -207,6 +230,39 @@ public class ReversibleDrawingActivity extends AbstractReversibleDrawingActivity
         // Close the menu.
         isThicknessMenuOpen = toggleMenu(THICKNESS_MENU_ITEMS, isThicknessMenuOpen);
         enableCollapsibleMenu(R.id.fab_color, COLOR_MENU_ITEMS, !isThicknessMenuOpen);
+        enableCollapsibleMenu(R.id.fab_opacity, OPACITY_MENU_ITEMS, !isThicknessMenuOpen);
+    }
+
+    /**
+     * Callback for creating an action when the user changes the opacity.
+     *
+     * @param view The FAB the user clicked on.
+     */
+    private void onOpacityMenuSelected(View view) {
+        int alpha;
+        switch (view.getId()) {
+            case R.id.fab_opacity_25:
+                alpha = (int) (0.25f * 255);
+                doAction(new ChangeOpacityAction(alpha));
+                break;
+            case R.id.fab_opacity_50:
+                alpha = (int) (0.5f * 255);
+                doAction(new ChangeOpacityAction(alpha));
+                break;
+            case R.id.fab_opacity_75:
+                alpha = (int) (0.75f * 255);
+                doAction(new ChangeOpacityAction(alpha));
+                break;
+            case R.id.fab_opacity_100:
+                alpha = 255;
+                doAction(new ChangeOpacityAction(alpha));
+                break;
+        }
+
+        // Close the menu.
+        isOpacityMenuOpen = toggleMenu(OPACITY_MENU_ITEMS, isOpacityMenuOpen);
+        enableCollapsibleMenu(R.id.fab_color, COLOR_MENU_ITEMS, !isOpacityMenuOpen);
+        enableCollapsibleMenu(R.id.fab_thickness, THICKNESS_MENU_ITEMS, !isOpacityMenuOpen);
     }
 
     /**
