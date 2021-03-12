@@ -79,7 +79,8 @@ public class ReversibleDrawingActivity extends AbstractReversibleDrawingActivity
             @Override
             public void onColorSelected(int color) {
                 // set color
-                p.setColor(color);
+//                p.setColor(color);
+                doAction(new ChangeColorAction(color));
 
                 // close menu
 //                isColorMenuOpen = !isColorMenuOpen;
@@ -139,13 +140,14 @@ public class ReversibleDrawingActivity extends AbstractReversibleDrawingActivity
         deregisterActionListener(this::onAction);
         deregisterActionUndoListener(this::onActionUndo);
         // TODO: deregister the color change listener
-//        mColorPickerView.removeColorChangeListener(mPickerListener);
+        mColorPickerView.removeColorChangeListener(mPickerListener);
     }
 
     private void onAction(AbstractReversibleAction action) {
         if (action instanceof ChangeColorAction) {
             @ColorInt int currColor = mDrawingView.getCurrentPaint().getColor();
             // TODO: update the color of the color picker if needed
+            mColorPickerView.setColor(currColor);
         }
     }
 
@@ -153,6 +155,7 @@ public class ReversibleDrawingActivity extends AbstractReversibleDrawingActivity
         if (action instanceof ChangeColorAction) {
             @ColorInt int currColor = mDrawingView.getCurrentPaint().getColor();
             // TODO: update the color of the color picker if needed
+            mColorPickerView.setColor(currColor);
         }
     }
 
