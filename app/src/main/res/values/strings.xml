@@ -15,4 +15,5 @@
     <string name="thick_desc">Select thick stroke</string>
     <string name="med_desc">Select medium stroke</string>
     <string name="thin_desc">Select thin stroke</string>
+    <string name="zero_desc">Select zero stroke</string>
 </resources>

@@ -22,7 +22,7 @@ public class ReversibleDrawingActivity extends AbstractReversibleDrawingActivity
     /** List of menu item FABs for thickness menu. */
     @IdRes
     private static final int[] THICKNESS_MENU_ITEMS = {
-        R.id.fab_thickness_10, R.id.fab_thickness_20, R.id.fab_thickness_30
+            R.id.fab_thickness_0, R.id.fab_thickness_10, R.id.fab_thickness_20, R.id.fab_thickness_30
     };
 
     /** List of menu item FABs for color menu. */
@@ -158,6 +158,9 @@ public class ReversibleDrawingActivity extends AbstractReversibleDrawingActivity
      */
     private void onThicknessMenuSelected(View view) {
         switch (view.getId()) {
+            case R.id.fab_thickness_0:
+                doAction(new ChangeThicknessAction(0));
+                break;
             case R.id.fab_thickness_10:
                 doAction(new ChangeThicknessAction(10));
                 break;
