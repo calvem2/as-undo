@@ -28,7 +28,8 @@ public class ReversibleDrawingActivity extends AbstractReversibleDrawingActivity
     /** List of menu item FABs for color menu. */
     @IdRes
     private static final int[] COLOR_MENU_ITEMS = {
-        R.id.fab_red, R.id.fab_blue, R.id.fab_green
+            // todo: do i leave as a collapsible menu?
+//        R.id.fab_red, R.id.fab_blue, R.id.fab_green
     };
 
     /** State variables used to track whether menus are open. */
@@ -40,6 +41,8 @@ public class ReversibleDrawingActivity extends AbstractReversibleDrawingActivity
 
     /** Place to store ColorPickerView */
     protected AbstractColorPickerView mColorPickerView;
+    // todo: again - really coding out of my ass
+    protected AbstractColorPickerView.ColorChangeListener mPickerListener;
 
     /**
      * Creates a new AbstractReversibleDrawingActivity with the default history limit.
@@ -70,6 +73,21 @@ public class ReversibleDrawingActivity extends AbstractReversibleDrawingActivity
         mMiniFabSize = getResources().getDimensionPixelSize(R.dimen.design_fab_size_mini);
 
         // TODO: initialize color picker and register color change listener
+        mColorPickerView = findViewById(R.id.circleColorPicker);
+        mPickerListener = new AbstractColorPickerView.ColorChangeListener() {
+            @Override
+            public void onColorSelected(int color) {
+                // set color
+                p.setColor(color);
+
+                // close menu
+                isColorMenuOpen = !isColorMenuOpen;
+                mColorPickerView.setFocusable(isColorMenuOpen);
+                setViewVisibility(mColorPickerView, isColorMenuOpen);
+                enableCollapsibleMenu(R.id.fab_thickness, THICKNESS_MENU_ITEMS, !isColorMenuOpen);
+            }
+        };
+        mColorPickerView.addColorChangeListener(mPickerListener);
 
         // Add thickness and color menus to the ConstraintLayout. Pass in onColorMenuSelected
         // and onThicknessMenuSelected as the listeners for these menus
@@ -77,7 +95,11 @@ public class ReversibleDrawingActivity extends AbstractReversibleDrawingActivity
         // TODO: you may have to edit this after integrating the color picker
         findViewById(R.id.fab_color).setOnClickListener((v) -> {
             enableCollapsibleMenu(R.id.fab_thickness, THICKNESS_MENU_ITEMS, isColorMenuOpen);
-            isColorMenuOpen = toggleMenu(COLOR_MENU_ITEMS, isColorMenuOpen);
+
+            // todo: really coding out of my ass here
+            isColorMenuOpen = !isColorMenuOpen;
+            mColorPickerView.setFocusable(isColorMenuOpen);
+            setViewVisibility(mColorPickerView, isColorMenuOpen);
         });
 
         // Only draw a stroke when none of the collapsible menus are open
@@ -87,7 +109,9 @@ public class ReversibleDrawingActivity extends AbstractReversibleDrawingActivity
                 enableCollapsibleMenu(R.id.fab_color, COLOR_MENU_ITEMS, !isThicknessMenuOpen);
                 return true;
             } else if (isColorMenuOpen) {
-                isColorMenuOpen = toggleMenu(COLOR_MENU_ITEMS, isColorMenuOpen);
+                isColorMenuOpen = !isColorMenuOpen;
+                mColorPickerView.setFocusable(isColorMenuOpen);
+                setViewVisibility(mColorPickerView, isColorMenuOpen);
                 enableCollapsibleMenu(R.id.fab_thickness, THICKNESS_MENU_ITEMS, !isColorMenuOpen);
                 return true;
             } else {
@@ -111,6 +135,7 @@ public class ReversibleDrawingActivity extends AbstractReversibleDrawingActivity
         deregisterActionListener(this::onAction);
         deregisterActionUndoListener(this::onActionUndo);
         // TODO: deregister the color change listener
+//        mColorPickerView.removeColorChangeListener(mPickerListener);
     }
 
     private void onAction(AbstractReversibleAction action) {

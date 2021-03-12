@@ -15,5 +15,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <cse340.undo.app.CircleColorPickerView
+        android:id="@+id/circleColorPicker"
+        android:layout_width="280dp"
+        android:layout_height="280dp"
+        android:layout_centerInParent="true"
+        android:visibility="invisible"
+        android:focusable="false"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 
 </android.support.constraint.ConstraintLayout>
