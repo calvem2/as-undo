@@ -74,6 +74,7 @@ public class ReversibleDrawingActivity extends AbstractReversibleDrawingActivity
 
         // TODO: initialize color picker and register color change listener
         mColorPickerView = findViewById(R.id.circleColorPicker);
+        mColorPickerView.bringToFront();
         mPickerListener = new AbstractColorPickerView.ColorChangeListener() {
             @Override
             public void onColorSelected(int color) {
@@ -81,7 +82,8 @@ public class ReversibleDrawingActivity extends AbstractReversibleDrawingActivity
                 p.setColor(color);
 
                 // close menu
-                isColorMenuOpen = !isColorMenuOpen;
+//                isColorMenuOpen = !isColorMenuOpen;
+                isColorMenuOpen = toggleMenu(COLOR_MENU_ITEMS, isColorMenuOpen);
                 mColorPickerView.setFocusable(isColorMenuOpen);
                 setViewVisibility(mColorPickerView, isColorMenuOpen);
                 enableCollapsibleMenu(R.id.fab_thickness, THICKNESS_MENU_ITEMS, !isColorMenuOpen);
@@ -97,7 +99,8 @@ public class ReversibleDrawingActivity extends AbstractReversibleDrawingActivity
             enableCollapsibleMenu(R.id.fab_thickness, THICKNESS_MENU_ITEMS, isColorMenuOpen);
 
             // todo: really coding out of my ass here
-            isColorMenuOpen = !isColorMenuOpen;
+//            isColorMenuOpen = !isColorMenuOpen;
+            isColorMenuOpen = toggleMenu(COLOR_MENU_ITEMS, isColorMenuOpen);
             mColorPickerView.setFocusable(isColorMenuOpen);
             setViewVisibility(mColorPickerView, isColorMenuOpen);
         });
@@ -109,7 +112,8 @@ public class ReversibleDrawingActivity extends AbstractReversibleDrawingActivity
                 enableCollapsibleMenu(R.id.fab_color, COLOR_MENU_ITEMS, !isThicknessMenuOpen);
                 return true;
             } else if (isColorMenuOpen) {
-                isColorMenuOpen = !isColorMenuOpen;
+//                isColorMenuOpen = !isColorMenuOpen;
+                isColorMenuOpen = toggleMenu(COLOR_MENU_ITEMS, isColorMenuOpen);
                 mColorPickerView.setFocusable(isColorMenuOpen);
                 setViewVisibility(mColorPickerView, isColorMenuOpen);
                 enableCollapsibleMenu(R.id.fab_thickness, THICKNESS_MENU_ITEMS, !isColorMenuOpen);
