@@ -7,6 +7,8 @@ import java.util.LinkedList;
 
 import cse340.undo.actions.AbstractReversibleAction;
 
+// Documentation used
+// Deque: https://developer.android.com/reference/java/util/Deque
 /**
  * Keeps a history of actions that have been done and undone using two stacks. When an item is done,
  * it is pushed onto the undo stack. When an item is undone, it is popped from the undo stack and
@@ -52,7 +54,6 @@ public class StackHistory implements AbstractStackHistory {
         }
         mUndoStack.add(action);
         mRedoStack.clear();
-
     }
 
     /**

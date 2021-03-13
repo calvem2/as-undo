@@ -28,10 +28,7 @@ public class ReversibleDrawingActivity extends AbstractReversibleDrawingActivity
 
     /** List of menu item FABs for color menu. */
     @IdRes
-    private static final int[] COLOR_MENU_ITEMS = {
-            // todo: do i leave as a collapsible menu?
-//        R.id.fab_red, R.id.fab_blue, R.id.fab_green
-    };
+    private static final int[] COLOR_MENU_ITEMS = {};
 
     /** List of menu item FABs for opacity menu. */
     @IdRes
@@ -49,7 +46,6 @@ public class ReversibleDrawingActivity extends AbstractReversibleDrawingActivity
 
     /** Place to store ColorPickerView */
     protected AbstractColorPickerView mColorPickerView;
-    // todo: again - really coding out of my ass
     protected AbstractColorPickerView.ColorChangeListener mPickerListener;
 
     /**
@@ -106,8 +102,6 @@ public class ReversibleDrawingActivity extends AbstractReversibleDrawingActivity
         findViewById(R.id.fab_color).setOnClickListener((v) -> {
             enableCollapsibleMenu(R.id.fab_thickness, THICKNESS_MENU_ITEMS, isColorMenuOpen);
             enableCollapsibleMenu(R.id.fab_opacity, OPACITY_MENU_ITEMS, isColorMenuOpen);
-
-            // todo: really coding out of my ass here
             isColorMenuOpen = toggleMenu(COLOR_MENU_ITEMS, isColorMenuOpen);
             mColorPickerView.setFocusable(isColorMenuOpen);
             setViewVisibility(mColorPickerView, isColorMenuOpen);
