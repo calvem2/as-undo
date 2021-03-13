@@ -121,7 +121,6 @@ public class ReversibleDrawingActivity extends AbstractReversibleDrawingActivity
                 enableCollapsibleMenu(R.id.fab_opacity, OPACITY_MENU_ITEMS, !isThicknessMenuOpen);
                 return true;
             } else if (isColorMenuOpen) {
-//                isColorMenuOpen = !isColorMenuOpen;
                 isColorMenuOpen = toggleMenu(COLOR_MENU_ITEMS, isColorMenuOpen);
                 mColorPickerView.setFocusable(isColorMenuOpen);
                 setViewVisibility(mColorPickerView, isColorMenuOpen);
@@ -202,7 +201,6 @@ public class ReversibleDrawingActivity extends AbstractReversibleDrawingActivity
         // Close the menu.
         isColorMenuOpen = toggleMenu(COLOR_MENU_ITEMS, isColorMenuOpen);
         enableCollapsibleMenu(R.id.fab_thickness, THICKNESS_MENU_ITEMS, !isColorMenuOpen);
-//        enableCollapsibleMenu(R.id.fab_opacity, OPACITY_MENU_ITEMS, !isColorMenuOpen);
     }
 
     /**

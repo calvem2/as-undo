@@ -66,7 +66,8 @@
         android:tint="@android:color/white"
         android:contentDescription="@string/opacity_desc"
         android:focusable="true"
-        app:srcCompat="@drawable/ic_brush" />
+        app:srcCompat="@drawable/ic_opacity" />
+
 
     <TextView
         android:layout_width="match_parent"
